@@ -1,4 +1,7 @@
 // src/components/Hero.tsx
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+
 export default function Hero() {
   return (
     <section className="pt-24 pb-16 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
@@ -9,10 +12,11 @@ export default function Hero() {
         <p className="mb-8 max-w-xl mx-auto sm:mx-0">
           Cursos diseñados para potenciar tus habilidades y ayudarte a brillar en tu carrera profesional.
         </p>
-        <button className="bg-white text-blue-700 px-6 py-3 rounded font-semibold hover:bg-gray-100 transition">
-          Ver cursos
-        </button>
+        <Button asChild variant="secondary" className="text-blue-700 font-semibold">
+          <Link href="/courses">Ver cursos</Link>
+        </Button>
       </div>
     </section>
   );
 }
+
