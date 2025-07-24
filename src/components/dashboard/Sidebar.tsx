@@ -1,17 +1,11 @@
-// components/layout/Sidebar.tsx
-
 "use client";
 
 import {
   Home,
   GraduationCap,
-  Users,
   Settings,
-  Menu,
-  X,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import {
   TooltipProvider,
@@ -20,62 +14,67 @@ import {
   TooltipContent,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import LogoWithTitle from "@/components/LogoWithTitle";
 
-const links = [
+const mainLinks = [
   { href: "/", label: "Inicio", icon: Home },
   { href: "/courses", label: "Cursos", icon: GraduationCap },
-  { href: "/about", label: "Sobre Nosotros", icon: Users },
+];
+
+const bottomLinks = [
   { href: "/settings", label: "Configuración", icon: Settings },
 ];
 
 export function Sidebar() {
-  const [collapsed, setCollapsed] = useState(false);
-
   return (
     <TooltipProvider delayDuration={0}>
       <aside
         className={cn(
-          "h-screen border-r bg-background transition-all",
-          collapsed ? "w-16" : "w-64"
+          "h-screen border-r bg-background transition-all flex flex-col w-64"
         )}
       >
-        <div className="flex items-center justify-between px-4 py-4 border-b">
-          <span
-            className={cn(
-              "text-xl font-bold text-primary transition-opacity",
-              collapsed && "opacity-0"
-            )}
-          >
-            Glowself
-          </span>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setCollapsed(!collapsed)}
-          >
-            {collapsed ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5" />}
-          </Button>
+        {/* Contenedor logo con escala para hacerlo más pequeño */}
+        <div
+          className="flex items-center justify-center px-4 py-6 border-b"
+          style={{ minHeight: 72, transform: "scale(0.85)", transformOrigin: "center" }}
+        >
+          <LogoWithTitle />
         </div>
 
-        <nav className="flex flex-col gap-2 mt-4 px-2">
-          {links.map(({ href, label, icon: Icon }) => (
+        {/* Links principales */}
+        <nav className="flex-1 flex flex-col gap-3 px-4 mt-10">
+          {mainLinks.map(({ href, label, icon: Icon }) => (
             <Tooltip key={href}>
               <TooltipTrigger asChild>
                 <Link href={href}>
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start gap-2"
-                  >
+                  <Button variant="ghost" className="w-full justify-start gap-3">
                     <Icon className="h-5 w-5" />
-                    {!collapsed && <span>{label}</span>}
+                    <span>{label}</span>
                   </Button>
                 </Link>
               </TooltipTrigger>
-              {collapsed && (
-                <TooltipContent side="right">
-                  <p>{label}</p>
-                </TooltipContent>
-              )}
+              <TooltipContent side="right">
+                <p>{label}</p>
+              </TooltipContent>
+            </Tooltip>
+          ))}
+        </nav>
+
+        {/* Links inferiores */}
+        <nav className="px-4 mb-8 mt-auto">
+          {bottomLinks.map(({ href, label, icon: Icon }) => (
+            <Tooltip key={href}>
+              <TooltipTrigger asChild>
+                <Link href={href}>
+                  <Button variant="ghost" className="w-full justify-start gap-3">
+                    <Icon className="h-5 w-5" />
+                    <span>{label}</span>
+                  </Button>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">
+                <p>{label}</p>
+              </TooltipContent>
             </Tooltip>
           ))}
         </nav>

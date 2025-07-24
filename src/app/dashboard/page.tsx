@@ -2,6 +2,7 @@
 import Header from "@/components/layout/Header";
 import Hero from "@/components/Hero";
 import CourseCard from "@/components/CourseCard";
+import CompanyInfo from "@/components/CompanyInfo";
 
 const cursosDestacados = [
   {
@@ -30,10 +31,14 @@ export default function Home() {
       <Header />
       <main className="pt-16">
         <Hero />
-        <section className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {cursosDestacados.map((curso) => (
-            <CourseCard key={curso.title} {...curso} />
-          ))}
+        <CompanyInfo />
+        <section className="max-w-7xl mx-auto px-6 py-12">
+          <h2 className="text-3xl font-bold mb-8">Cursos Destacados</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            {cursosDestacados.map((curso) => (
+              <CourseCard key={curso.id} {...curso} />
+            ))}
+          </div>
         </section>
       </main>
     </>
