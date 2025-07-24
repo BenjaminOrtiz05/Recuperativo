@@ -5,16 +5,19 @@ import CourseCard from "@/components/CourseCard";
 
 const cursosDestacados = [
   {
+    id: "liderazgo",
     title: "Curso de Liderazgo",
     description: "Desarrolla habilidades para liderar equipos con éxito.",
     image: "/liderazgo.jpg",
   },
   {
+    id: "comunicacion",
     title: "Comunicación Efectiva",
     description: "Mejora tu comunicación interpersonal y profesional.",
     image: "/comunicacion.jpg",
   },
   {
+    id: "tiempo",
     title: "Gestión del Tiempo",
     description: "Aprende a administrar tu tiempo y aumenta tu productividad.",
     image: "/tiempo.jpg",

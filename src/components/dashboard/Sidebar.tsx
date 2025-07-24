@@ -1,62 +1,85 @@
-// src/components/dashboard/Sidebar.tsx
+// components/layout/Sidebar.tsx
+
 "use client";
 
-import { useState } from "react";
+import {
+  Home,
+  GraduationCap,
+  Users,
+  Settings,
+  Menu,
+  X,
+} from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import {
+  TooltipProvider,
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { Home, BookOpen, Mail, Menu, X } from "lucide-react";
 
-const navItems = [
-  { href: "/dashboard", label: "Inicio", icon: <Home size={20} /> },
-  { href: "/courses", label: "Cursos", icon: <BookOpen size={20} /> },
-  { href: "/contact", label: "Contacto", icon: <Mail size={20} /> },
+const links = [
+  { href: "/", label: "Inicio", icon: Home },
+  { href: "/courses", label: "Cursos", icon: GraduationCap },
+  { href: "/about", label: "Sobre Nosotros", icon: Users },
+  { href: "/settings", label: "Configuración", icon: Settings },
 ];
 
-export default function Sidebar() {
+export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <aside
-      className={`bg-gray-100 min-h-screen transition-width duration-300 ease-in-out
-        ${collapsed ? "w-16" : "w-56"} flex flex-col`}
-    >
-      {/* Botón para toggle */}
-      <div className="flex justify-end p-3 border-b border-gray-300">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setCollapsed(!collapsed)}
-          aria-label={collapsed ? "Expandir menú" : "Colapsar menú"}
-          className="text-gray-600 hover:text-gray-900"
-        >
-          {collapsed ? <Menu size={20} /> : <X size={20} />}
-        </Button>
-      </div>
-
-      {/* Navegación */}
-      <nav className="flex flex-col mt-4 gap-2 flex-1">
-        {navItems.map(({ href, label, icon }) => (
-          <Button
-            key={href}
-            asChild
-            variant="ghost"
-            className={`justify-start gap-3 px-4 py-3 text-gray-700 hover:bg-gray-200 hover:text-gray-900
-              ${collapsed ? "justify-center" : "justify-start"}`}
+    <TooltipProvider delayDuration={0}>
+      <aside
+        className={cn(
+          "h-screen border-r bg-background transition-all",
+          collapsed ? "w-16" : "w-64"
+        )}
+      >
+        <div className="flex items-center justify-between px-4 py-4 border-b">
+          <span
+            className={cn(
+              "text-xl font-bold text-primary transition-opacity",
+              collapsed && "opacity-0"
+            )}
           >
-            <Link href={href} className="flex items-center w-full">
-              {icon}
-              {!collapsed && <span className="ml-2">{label}</span>}
-            </Link>
+            Glowself
+          </span>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCollapsed(!collapsed)}
+          >
+            {collapsed ? <Menu className="w-5 h-5" /> : <X className="w-5 h-5" />}
           </Button>
-        ))}
-      </nav>
-
-      {/* Footer o info opcional */}
-      {!collapsed && (
-        <div className="p-4 border-t border-gray-300 text-gray-600 text-sm">
-          Glowself © {new Date().getFullYear()}
         </div>
-      )}
-    </aside>
+
+        <nav className="flex flex-col gap-2 mt-4 px-2">
+          {links.map(({ href, label, icon: Icon }) => (
+            <Tooltip key={href}>
+              <TooltipTrigger asChild>
+                <Link href={href}>
+                  <Button
+                    variant="ghost"
+                    className="w-full justify-start gap-2"
+                  >
+                    <Icon className="h-5 w-5" />
+                    {!collapsed && <span>{label}</span>}
+                  </Button>
+                </Link>
+              </TooltipTrigger>
+              {collapsed && (
+                <TooltipContent side="right">
+                  <p>{label}</p>
+                </TooltipContent>
+              )}
+            </Tooltip>
+          ))}
+        </nav>
+      </aside>
+    </TooltipProvider>
   );
 }
