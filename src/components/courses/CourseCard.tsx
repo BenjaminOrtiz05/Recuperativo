@@ -10,7 +10,7 @@ type Course = {
   category: string;
   duration: string;
   active: boolean;
-  imageSrc?: string;
+  image?: string;
 };
 
 function NoImageIcon() {
@@ -34,10 +34,10 @@ export function CourseCard({ course }: { course: Course }) {
   return (
     <div className="rounded-xl border bg-card shadow-sm p-4 flex flex-col justify-between transition-shadow hover:shadow-md duration-300">
       {/* Imagen o ícono */}
-      {course.imageSrc ? (
+      {course.image ? (
         <div className="relative w-full h-40 rounded-lg overflow-hidden mb-4">
           <Image
-            src={course.imageSrc}
+            src={course.image}
             alt={`Imagen del curso ${course.name}`}
             fill
             className="object-cover"
