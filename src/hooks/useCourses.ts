@@ -18,10 +18,14 @@ export const useCoursesCRUD = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchCourses = async () => {
+  const fetchCourses = async (filters?: { query?: string; category?: string }) => {
     setLoading(true);
     try {
-      const { data } = await axios.get<Course[]>(API_URL);
+      const params: Record<string, string> = {};
+      if (filters?.query) params.query = filters.query;
+      if (filters?.category && filters.category !== "all") params.category = filters.category;
+
+      const { data } = await axios.get<Course[]>(API_URL, { params });
       setCourses(data);
       setError(null);
     } catch (err: unknown) {

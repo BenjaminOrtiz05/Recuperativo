@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Course } from "@/hooks/useCourses"; // Asegúrate de importar esto
+import { Course } from "@/hooks/useCourses";
 
 interface SearchFilterProps {
   onResults: (courses: Course[]) => void;
@@ -29,20 +29,19 @@ export function SearchFilter({ onResults, categories }: SearchFilterProps) {
       setLoading(true);
       try {
         const params: Record<string, string> = {};
-        if (query) params.query = query;
+        if (query.trim() !== "") params.query = query.trim();
         if (category !== "all") params.category = category;
 
         const response = await axios.get<Course[]>(API_URL, { params });
         onResults(response.data);
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Error al filtrar cursos:", error);
-        onResults([]); // opcional: limpiar resultados si hay error
+        onResults([]);
       } finally {
         setLoading(false);
       }
     };
 
-    // Delay para evitar llamadas excesivas al escribir
     const timeout = setTimeout(() => {
       fetchFilteredCourses();
     }, 500);
