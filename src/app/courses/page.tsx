@@ -4,20 +4,14 @@ import React, { useState } from "react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { SearchFilter } from "@/components/courses/SearchFilter";
 import { CourseCard } from "@/components/courses/CourseCard";
-import { mockCourses } from "@/lib/data";
 import { PageHeader } from "@/components/courses/PageHeader";
+import { Course } from "@/hooks/useCourses"; // Asegúrate de importar
 
 export default function CoursesPage() {
-  const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("all");
+  const [courses, setCourses] = useState<Course[]>([]);
 
-  const categories = Array.from(new Set(mockCourses.map(c => c.category))).sort();
-
-  const filteredCourses = mockCourses.filter(course => {
-    const matchesQuery = course.name.toLowerCase().includes(query.toLowerCase());
-    const matchesCategory = category === "all" || course.category === category;
-    return matchesQuery && matchesCategory;
-  });
+  // Puedes definir las categorías manualmente o traerlas desde la API si las soporta
+  const categories = ["programación", "marketing", "diseño", "negocios"]; // Ejemplo
 
   return (
     <div>
@@ -30,17 +24,16 @@ export default function CoursesPage() {
             imageSrc="/courses.png"
           />
         </div>
+
         <SearchFilter
-          query={query}
-          onQueryChange={setQuery}
-          category={category}
-          onCategoryChange={setCategory}
+          onResults={setCourses}
           categories={categories}
         />
+
         <section className="overflow-y-auto h-full pr-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-x-8 gap-y-10">
-            {filteredCourses.length > 0 ? (
-              filteredCourses.map(course => (
+            {courses.length > 0 ? (
+              courses.map((course) => (
                 <CourseCard key={course.id} course={course} />
               ))
             ) : (

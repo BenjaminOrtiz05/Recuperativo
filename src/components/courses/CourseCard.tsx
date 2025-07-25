@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 type Course = {
   id: string;
-  name: string;
+  title: string;
   description: string;
   category: string;
   duration: string;
@@ -38,7 +38,7 @@ export function CourseCard({ course }: { course: Course }) {
         <div className="relative w-full h-40 rounded-lg overflow-hidden mb-4">
           <Image
             src={course.imageSrc}
-            alt={`Imagen del curso ${course.name}`}
+            alt={`Imagen del curso ${course.title}`}
             fill
             className="object-cover"
           />
@@ -49,7 +49,7 @@ export function CourseCard({ course }: { course: Course }) {
 
       {/* Título */}
       <h3 className="text-lg font-semibold text-foreground text-center mb-2">
-        {course.name}
+        {course.title}
       </h3>
 
       {/* Descripción */}
