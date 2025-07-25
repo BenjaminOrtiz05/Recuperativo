@@ -1,17 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { SearchFilter } from "@/components/courses/SearchFilter";
 import { CourseCard } from "@/components/courses/CourseCard";
 import { PageHeader } from "@/components/courses/PageHeader";
-import { Course } from "@/hooks/useCourses"; // Asegúrate de importar
+import { Course } from "@/hooks/useCourses";
+
+const API_URL = "https://web-production-a244.up.railway.app/api/courses";
 
 export default function CoursesPage() {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
 
-  // Puedes definir las categorías manualmente o traerlas desde la API si las soporta
-  const categories = ["programación", "marketing", "diseño", "negocios"]; // Ejemplo
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const { data } = await axios.get<Course[]>(API_URL);
+        setCourses(data);
+
+        // Extraer categorías únicas
+        const uniqueCategories = Array.from(
+          new Set(data.map((course) => course.category))
+        );
+
+        setCategories(uniqueCategories);
+      } catch (error) {
+        console.error("Error cargando cursos:", error);
+        setCourses([]);
+        setCategories([]);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   return (
     <div>
