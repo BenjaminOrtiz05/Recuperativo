@@ -18,6 +18,7 @@ export function useContact() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
+      
 
       const contentType = response.headers.get("content-type");
 
