@@ -3,7 +3,7 @@ import axios from "axios";
 
 export interface Course {
   id: string;
-  title: string;
+  name: string;
   description: string;
   category: string;
   duration: string;
