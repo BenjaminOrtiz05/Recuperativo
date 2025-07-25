@@ -2,5 +2,5 @@
 import LoadingScreen from "@/components/LoadingScreen";
 
 export default function Loading() {
-  return <LoadingScreen message="Cargando dashboard..." />;
+  return <LoadingScreen message="Cargando..." />;
 }

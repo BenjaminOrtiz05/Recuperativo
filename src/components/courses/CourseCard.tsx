@@ -10,10 +10,9 @@ type Course = {
   category: string;
   duration: string;
   active: boolean;
-  imageSrc?: string; // URL de imagen de vista previa opcional
+  imageSrc?: string;
 };
 
-// Ícono genérico para cuando no hay imagen
 function NoImageIcon() {
   return (
     <div className="w-full h-40 flex items-center justify-center bg-gray-200 rounded-lg mb-4">
@@ -33,23 +32,22 @@ function NoImageIcon() {
 
 export function CourseCard({ course }: { course: Course }) {
   return (
-    <div className="rounded-xl border bg-card shadow p-4 flex flex-col justify-between">
-      {/* Imagen o ícono arriba */}
+    <div className="rounded-xl border bg-card shadow-sm p-4 flex flex-col justify-between transition-shadow hover:shadow-md duration-300">
+      {/* Imagen o ícono */}
       {course.imageSrc ? (
         <div className="relative w-full h-40 rounded-lg overflow-hidden mb-4">
           <Image
             src={course.imageSrc}
             alt={`Imagen del curso ${course.name}`}
-            layout="fill"
-            objectFit="cover"
-            priority={false}
+            fill
+            className="object-cover"
           />
         </div>
       ) : (
         <NoImageIcon />
       )}
 
-      {/* Título centrado */}
+      {/* Título */}
       <h3 className="text-lg font-semibold text-foreground text-center mb-2">
         {course.name}
       </h3>
@@ -59,26 +57,25 @@ export function CourseCard({ course }: { course: Course }) {
         {course.description}
       </p>
 
-      {/* Categoría centrada */}
+      {/* Categoría */}
       <div className="flex justify-center mb-4">
         <Badge>{course.category}</Badge>
       </div>
 
-      {/* Duración y estado alineados a la izquierda */}
-      <div className="mb-4 space-y-1">
-        <p className="text-xs text-muted-foreground">Duración: {course.duration}</p>
-        <p
-          className={`text-xs font-medium ${
-            course.active ? "text-green-600" : "text-red-500"
-          }`}
-        >
+      {/* Info */}
+      <div className="mb-4 space-y-1 text-xs text-muted-foreground">
+        <p>Duración: {course.duration}</p>
+        <p className={course.active ? "text-green-600 font-medium" : "text-red-500 font-medium"}>
           {course.active ? "Activo" : "Inactivo"}
         </p>
       </div>
 
-      {/* Botón Ver más que dirige a /courses/[id] */}
-      <Link href={`/courses/${course.id}`}>
-        <Button variant="outline" className="w-full">
+      {/* Botón animado */}
+      <Link href={`/courses/${course.id}`} passHref>
+        <Button
+          variant="outline"
+          className="w-full transition-transform duration-300 hover:-translate-y-0.5 hover:scale-[1.02] hover:shadow hover:border-primary/60"
+        >
           Ver más
         </Button>
       </Link>

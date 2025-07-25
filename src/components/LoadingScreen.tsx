@@ -1,17 +1,20 @@
-// src/components/LoadingScreen.tsx
-export default function LoadingScreen({ message = "Cargando..." }: { message?: string }) {
+"use client";
+
+type LoadingScreenProps = {
+  message?: string;
+};
+
+export default function LoadingScreen({ message = "Cargando..." }: LoadingScreenProps) {
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm z-50">
-      {/* Spinner con animación de giro */}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 text-center">
       <svg
-        className="animate-spin h-12 w-12 text-primary"
+        className="animate-spin h-12 w-12 text-blue-600 mb-4"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        aria-label="loading"
       >
         <circle
-          className="opacity-20"
+          className="opacity-25"
           cx="12"
           cy="12"
           r="10"
@@ -19,14 +22,12 @@ export default function LoadingScreen({ message = "Cargando..." }: { message?: s
           strokeWidth="4"
         />
         <path
-          className="opacity-80"
+          className="opacity-75"
           fill="currentColor"
           d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
         />
       </svg>
-
-      {/* Texto con ligera animación para captar atención */}
-      <p className="mt-6 text-xl font-semibold text-primary animate-pulse">{message}</p>
+      <p className="text-lg text-gray-700">{message}</p>
     </div>
   );
 }
