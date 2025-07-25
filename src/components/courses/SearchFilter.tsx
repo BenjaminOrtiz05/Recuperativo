@@ -14,15 +14,15 @@ interface SearchFilterProps {
   onQueryChange: (val: string) => void;
   category: string;
   onCategoryChange: (val: string) => void;
+  categories: string[]; // ahora las categorías se pasan como prop
 }
-
-const categories = ["Desarrollo Web", "Diseño", "Marketing", "Ofimática", "Base de Datos"];
 
 export function SearchFilter({
   query,
   onQueryChange,
   category,
   onCategoryChange,
+  categories,
 }: SearchFilterProps) {
   return (
     <div className="flex flex-col md:flex-row gap-4">

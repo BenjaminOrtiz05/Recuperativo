@@ -1,14 +1,12 @@
-// src/components/WeeklyFeaturedCourses.tsx
 import CourseCard from "@/components/CourseCard";
 import { mockCourses } from "@/lib/data";
 import { getWeekNumber } from "@/lib/dateUtils";
+import { Course } from "@/hooks/useCourses"; // si quieres tipar
 
 function shuffleArray<T>(array: T[], seed: number): T[] {
-  // Simple shuffle con semilla (Fisher-Yates modificado con seed)
   const result = [...array];
   let currentIndex = result.length, temporaryValue: T, randomIndex: number;
-  
-  // Función de generación de números pseudoaleatorios con seed (mulberry32)
+
   function mulberry32(a: number) {
     return function() {
       let t = a += 0x6D2B79F5;
@@ -17,9 +15,9 @@ function shuffleArray<T>(array: T[], seed: number): T[] {
       return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
     }
   }
-  
+
   const random = mulberry32(seed);
-  
+
   while (currentIndex !== 0) {
     randomIndex = Math.floor(random() * currentIndex);
     currentIndex--;
@@ -33,13 +31,23 @@ function shuffleArray<T>(array: T[], seed: number): T[] {
 }
 
 export default function WeeklyFeaturedCourses() {
-  const activeCourses = mockCourses.filter(c => c.active);
+  // Para que coincida con el tipo Course, mapea mockCourses
+  const activeCourses: Course[] = mockCourses
+    .filter(c => c.active)
+    .map(c => ({
+      id: c.id,
+      title: c.name,
+      description: c.description,
+      category: c.category,
+      duration: c.duration,
+      image: c.imageSrc ?? "/default-image.png",
+      active: c.active,
+    }));
+
   const week = getWeekNumber(new Date());
 
-  // Mezclar los cursos con seed basado en la semana
   const shuffled = shuffleArray(activeCourses, week);
 
-  // Seleccionar máximo 3
   const cursosDestacados = shuffled.slice(0, 3);
 
   return (
@@ -47,10 +55,7 @@ export default function WeeklyFeaturedCourses() {
       {cursosDestacados.map((curso) => (
         <CourseCard
           key={curso.id}
-          id={curso.id}
-          title={curso.name}
-          description={curso.description}
-          image={curso.imageSrc || "/default-image.png"}
+          course={curso}
         />
       ))}
     </div>
