@@ -13,7 +13,7 @@ type SendContactResult =
 export function useContact() {
   const sendContactMessage = async (data: ContactData): Promise<SendContactResult> => {
     try {
-      const response = await fetch(`https://recuperativo-backend-production.up.railway.app/api/contact`, {
+      const response = await fetch(`https://web-production-a244.up.railway.app/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
