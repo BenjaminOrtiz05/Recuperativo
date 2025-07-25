@@ -26,7 +26,7 @@ type Course = {
   description: string;
   category: string;
   duration: string;
-  imageSrc?: string;
+  image?: string;
   active: boolean;
 };
 
@@ -85,9 +85,9 @@ export default async function CourseDetailPage({ params }: Props) {
         </Link>
 
         <div className="relative w-full h-72 rounded-xl overflow-hidden shadow-lg">
-          {course.imageSrc ? (
+          {course.image ? (
             <Image
-              src={course.imageSrc}
+              src={course.image}
               alt={`Imagen del curso ${course.name}`}
               fill
               className="object-cover"
