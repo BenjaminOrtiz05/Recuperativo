@@ -48,6 +48,7 @@ export function ContactForm() {
   const [status, setStatus] = useState<"success" | "error" | null>(null);
 
   const onSubmit = async (data: ContactData) => {
+    console.log("Formulario enviado:", data);
     setStatus(null);
     const result = await sendContactMessage(data);
 
@@ -73,7 +74,10 @@ export function ContactForm() {
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={(e) => {
+              e.preventDefault(); // prevenir recarga explícita (aunque handleSubmit ya lo hace)
+              form.handleSubmit(onSubmit)(e);
+            }}
             className="grid gap-6"
             noValidate
           >
@@ -137,7 +141,10 @@ export function ContactForm() {
             />
 
             {status === "success" && (
-              <Alert variant="default" className="bg-green-50 border-green-200 text-green-700">
+              <Alert
+                variant="default"
+                className="bg-green-50 border-green-200 text-green-700"
+              >
                 <CheckCircle className="h-5 w-5 text-green-600" />
                 <AlertTitle>Mensaje enviado</AlertTitle>
                 <AlertDescription>
