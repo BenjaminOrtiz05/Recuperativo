@@ -1,5 +1,3 @@
-// src/hooks/useCourses.ts
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -24,18 +22,18 @@ export const useCourses = () => {
     const fetchCourses = async () => {
       try {
         const response = await axios.get<Course[]>(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/courses`
+          `https://recuperativo-backend-production.up.railway.app/api/courses`
         );
         setCourses(response.data);
       } catch (err: unknown) {
-  if (axios.isAxiosError(err)) {
-        setError(err.response?.data?.message ?? err.message);
-    } else if (err instanceof Error) {
-        setError(err.message);
-    } else {
-        setError("Error desconocido");
-    }
-    } finally {
+        if (axios.isAxiosError(err)) {
+          setError(err.response?.data?.message ?? err.message);
+        } else if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("Error desconocido");
+        }
+      } finally {
         setLoading(false);
       }
     };
