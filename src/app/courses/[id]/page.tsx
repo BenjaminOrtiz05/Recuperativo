@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { mockCourses } from "@/lib/data";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Sidebar } from "@/components/dashboard/Sidebar";
@@ -13,24 +12,41 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
+// ✅ ya no usamos mockCourses
+// import { mockCourses } from "@/lib/data";
+
 type Props = {
   params: Promise<{ id: string }>;
 };
 
-type Course = typeof mockCourses[number];
+// ✅ Define un tipo Course aproximado si no tienes uno ya importado
+type Course = {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  duration: string;
+  imageSrc?: string;
+  active: boolean;
+};
 
 export default async function CourseDetailPage({ params }: Props) {
   const { id } = await params;
 
-  const course: Course | null = mockCourses.find((c) => c.id === id) ?? null;
+  // ✅ Usamos fetch al endpoint real
+  const res = await fetch(`https://web-production-a244.up.railway.app/api/courses/${id}`, {
+    cache: "no-store",
+  });
 
-  if (!course) {
+  if (!res.ok) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <p className="text-muted-foreground text-lg">Curso no encontrado.</p>
       </div>
     );
   }
+
+  const course: Course = await res.json();
 
   const syllabus = [
     { title: "Introducción", topics: ["Presentación", "Objetivos del curso"] },
@@ -103,7 +119,6 @@ export default async function CourseDetailPage({ params }: Props) {
           {renderDurationTimeline(course.duration)}
         </section>
 
-        {/* Temario sin flecha duplicada */}
         <section>
           <h2 className="text-2xl font-semibold mb-6">Temario</h2>
           <Accordion type="multiple" className="space-y-3">

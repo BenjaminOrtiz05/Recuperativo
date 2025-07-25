@@ -1,7 +1,12 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
 import CourseCard from "@/components/CourseCard";
-import { mockCourses } from "@/lib/data";
 import { getWeekNumber } from "@/lib/dateUtils";
-import { Course } from "@/hooks/useCourses"; // si quieres tipar
+import { Course } from "@/hooks/useCourses"; // tu interfaz
+
+const API_URL = "https://web-production-a244.up.railway.app/api/courses";
 
 function shuffleArray<T>(array: T[], seed: number): T[] {
   const result = [...array];
@@ -13,7 +18,7 @@ function shuffleArray<T>(array: T[], seed: number): T[] {
       t = Math.imul(t ^ (t >>> 15), t | 1);
       t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
       return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    }
+    };
   }
 
   const random = mulberry32(seed);
@@ -31,32 +36,30 @@ function shuffleArray<T>(array: T[], seed: number): T[] {
 }
 
 export default function WeeklyFeaturedCourses() {
-  // Para que coincida con el tipo Course, mapea mockCourses
-  const activeCourses: Course[] = mockCourses
-    .filter(c => c.active)
-    .map(c => ({
-      id: c.id,
-      title: c.name,
-      description: c.description,
-      category: c.category,
-      duration: c.duration,
-      image: c.imageSrc ?? "/default-image.png",
-      active: c.active,
-    }));
+  const [courses, setCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get<Course[]>(API_URL);
+        const active = response.data.filter(c => c.active);
+        setCourses(active);
+      } catch (error) {
+        console.error("Error al obtener cursos:", error);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const week = getWeekNumber(new Date());
-
-  const shuffled = shuffleArray(activeCourses, week);
-
-  const cursosDestacados = shuffled.slice(0, 3);
+  const shuffled = shuffleArray(courses, week);
+  const featuredCourses = shuffled.slice(0, 3);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-      {cursosDestacados.map((curso) => (
-        <CourseCard
-          key={curso.id}
-          course={curso}
-        />
+      {featuredCourses.map((course) => (
+        <CourseCard key={course.id} course={course} />
       ))}
     </div>
   );
