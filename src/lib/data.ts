@@ -1,3 +1,4 @@
+// src/lib/data.ts
 export const mockCourses = [
   {
     id: "1",
