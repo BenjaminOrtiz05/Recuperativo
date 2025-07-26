@@ -4,6 +4,10 @@ import { Sidebar } from "@/components/dashboard/Sidebar";
 import { ContactForm } from "@/components/contact/ContactForm";
 import { ContactInfo } from "@/components/contact/ContactInfo";
 
+export const metadata = {
+  title: 'Contacto',
+};
+
 export default function ContactPage() {
   return (
     <div>

@@ -10,6 +10,10 @@ import { Course } from "@/hooks/useCourses";
 
 const API_URL = "https://web-production-a244.up.railway.app/api/courses";
 
+export const metadata = {
+  title: 'Cursos',
+};
+
 export default function CoursesPage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [categories, setCategories] = useState<string[]>([]);

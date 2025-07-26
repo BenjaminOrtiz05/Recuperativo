@@ -4,6 +4,10 @@ import Hero from "@/components/Hero";
 import CompanyInfo from "@/components/CompanyInfo";
 import WeeklyFeaturedCourses from "@/components/dashboard/WeeklyFeaturedCourses";
 
+export const metadata = {
+  title: 'Dashboard',
+};
+
 export default function Home() {
   return (
     <>

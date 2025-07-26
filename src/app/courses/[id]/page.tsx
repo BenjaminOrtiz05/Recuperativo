@@ -30,6 +30,10 @@ type Course = {
   active: boolean;
 };
 
+export const metadata = {
+  title: 'Detalles de Curso',
+};
+
 export default async function CourseDetailPage({ params }: Props) {
   const { id } = await params;
 
