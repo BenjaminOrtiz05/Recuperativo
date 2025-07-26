@@ -1,19 +1,14 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import axios from "axios";
+// app/components/WeeklyFeaturedCourses.tsx
 import CourseCard from "@/components/CourseCard";
 import { getWeekNumber } from "@/lib/dateUtils";
-import { Course } from "@/hooks/useCourses"; // tu interfaz
-
-const API_URL = "https://web-production-a244.up.railway.app/api/courses";
+import { Course } from "@/hooks/useCourses";
 
 function shuffleArray<T>(array: T[], seed: number): T[] {
   const result = [...array];
   let currentIndex = result.length, temporaryValue: T, randomIndex: number;
 
   function mulberry32(a: number) {
-    return function() {
+    return function () {
       let t = a += 0x6D2B79F5;
       t = Math.imul(t ^ (t >>> 15), t | 1);
       t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
@@ -35,26 +30,19 @@ function shuffleArray<T>(array: T[], seed: number): T[] {
   return result;
 }
 
-export default function WeeklyFeaturedCourses() {
-  const [courses, setCourses] = useState<Course[]>([]);
+export default async function WeeklyFeaturedCourses() {
+  const res = await fetch("https://web-production-a244.up.railway.app/api/courses", {
+    next: { revalidate: 3600 }, // Cache para 1 hora
+  });
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const response = await axios.get<Course[]>(API_URL);
-        const active = response.data.filter(c => c.active);
-        setCourses(active);
-      } catch (error) {
-        console.error("Error al obtener cursos:", error);
-      }
-    };
+  if (!res.ok) {
+    throw new Error("No se pudieron cargar los cursos");
+  }
 
-    fetchCourses();
-  }, []);
-
+  const data: Course[] = await res.json();
+  const active = data.filter((c) => c.active);
   const week = getWeekNumber(new Date());
-  const shuffled = shuffleArray(courses, week);
-  const featuredCourses = shuffled.slice(0, 3);
+  const featuredCourses = shuffleArray(active, week).slice(0, 3);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
