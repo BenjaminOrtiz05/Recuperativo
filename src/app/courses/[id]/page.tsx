@@ -160,12 +160,14 @@ export default async function CourseDetailPage({ params }: Props) {
         </section>
 
         <div className="pt-6">
-          <Button
-            size="lg"
-            className="w-full max-w-xs mx-auto block shadow-lg hover:shadow-xl transition-shadow"
-          >
-            Inscribirse ahora
-          </Button>
+          <Link href="/contact" passHref>
+            <Button
+              size="lg"
+              className="w-full max-w-xs mx-auto block shadow-lg hover:shadow-xl transition-shadow"
+            >
+              Contáctanos ahora
+            </Button>
+          </Link>
         </div>
       </main>
     </div>
