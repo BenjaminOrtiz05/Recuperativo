@@ -7,7 +7,7 @@ import { ReactNode } from 'react';
 export const metadata: Metadata = {
   title: {
     default: 'Glowself',
-    template: 'Glowself | %s',
+    template: 'Glowself - %s',
   },
   description: 'Glowself: plataforma de gestión moderna y flexible.',
   icons: {

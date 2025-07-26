@@ -22,7 +22,7 @@ const API_URL = "https://web-production-a244.up.railway.app/api/courses";
 export function SearchFilter({ onResults, categories }: SearchFilterProps) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchFilteredCourses = async () => {

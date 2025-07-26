@@ -47,7 +47,7 @@ export const useCoursesCRUD = () => {
       const { data } = await axios.post<Course>(API_URL, course);
       setCourses(prev => [...prev, data]);
       setError(null);
-    } catch (err) {
+    } catch {
       setError("Error al crear curso");
     } finally {
       setLoading(false);
@@ -60,7 +60,7 @@ export const useCoursesCRUD = () => {
       const { data } = await axios.put<Course>(`${API_URL}/${id}`, updates);
       setCourses(prev => prev.map(c => (c.id === id ? data : c)));
       setError(null);
-    } catch (err) {
+    } catch {
       setError("Error al actualizar curso");
     } finally {
       setLoading(false);
@@ -73,7 +73,7 @@ export const useCoursesCRUD = () => {
       await axios.delete(`${API_URL}/${id}`);
       setCourses(prev => prev.filter(c => c.id !== id));
       setError(null);
-    } catch (err) {
+    } catch {
       setError("Error al eliminar curso");
     } finally {
       setLoading(false);
